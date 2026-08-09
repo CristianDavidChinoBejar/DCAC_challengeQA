@@ -1,6 +1,8 @@
-# QA Automation Challenge - FakeStore API Testing
+# QA Automation Challenge - FakeStore y SauceDemo
 
-Contiene la suite de pruebas automatizadas de integración y contrato para la FakeStore API (https://fakestoreapi.com/), desarrollada con **Cypress** y **TypeScript**.
+Este repositorio contiene automatización de pruebas End to End utilizando [Cypress](https://www.cypress.io/) y TypeScript. 
+
+El proyecto cubre los flujos principales de dos aplicaciones de prueba: **FakeStore** (API Testing) y **SauceDemo** (UI Testing).
 
 ## Tecnologías y Arquitectura
 
@@ -10,28 +12,11 @@ Contiene la suite de pruebas automatizadas de integración y contrato para la Fa
 
 ---
 
-## Estructura del Proyecto
+## Estructura de Pruebas
 
-```plaintext
-DCAC_challengeQA/
-├── cypress/
-│   ├── e2e/
-│   │   └── api_fakestore_flow.cy.ts   # Suite principal de pruebas E2E y Contrato
-│   ├── fixtures/
-│   │   └── schemas/                   # Esquemas JSON para validación con AJV
-│   │       ├── cart_schema.ts
-│   │       └── login_schema.ts
-│   └── support/
-│       ├── commands.ts                # Custom Commands (cy.login)
-│       ├── index.d.ts                 # Tipado custom de TypeScript
-│       └── helpers/
-│           └── schema_validator.ts    # Helper para validación de esquemas con AJV
-├── cypress.config.ts                  # Configuración global de Cypress (baseUrl, etc.)
-├── cypress.env.json.example           # Plantilla de variables de entorno
-├── package.json                       # Dependencias y scripts de ejecución
-├── tsconfig.json                      # Configuración de TypeScript
-└── README.md                          # Documentación del proyecto
-```
+- `fakestore_flow.cy.ts`: Valida los flujos principales de FakeStore (login, lista de productos, carrito de compras).
+- `saucedemo_flow.cy.ts`: Valida el flujo completo de compra en SauceDemo (Agregar productos al carrito, checkout y confirmación de compra).
+
 ## Requisitos Previos
 
 Tener instalados:
@@ -55,7 +40,7 @@ Tener instalados:
 
 ## Configuración de Variables de entorno (`cypress.env.json`)
 
-Para ejecutar la suite de pruebas sin hardcodear credenciales en el código base, debes crear un archivo `cypress.env.json` en la raíz del proyecto (basándote en la plantilla `cypress.env.json.example`). A continuación se explican los pasos a seguir:
+Para ejecutar la suite de pruebas sin hardcodear credenciales en el código base, tenes que crear un archivo `cypress.env.json` en la raíz del proyecto (basándote en la plantilla `cypress.env.json.example`). A continuación se explican los pasos a seguir:
 
 ### 1. Obtención de Credenciales de Prueba
 
@@ -85,13 +70,17 @@ Crea el archivo cypress.env.json en la raíz del proyecto, mapeando las propieda
 * ```auth_username```: Valor extraído de la clave ```username``` del usuario elegido (ej. "johnd").
 * ```auth_password```: Valor extraído de la clave ```password``` del usuario elegido (ej. "m38rmF$").
 * ```user_id```: Identificador numérico asociado al usuario o cualquier número entero válido (ej. 1 o 2).
+* ```api_url```: conservar valor "https://fakestoreapi.com",
+* ```ui_url```: conservar valor "www.saucedemo.com"
 
 **Ejemplo de cypress.env.json final:**
 ```json
 {
   "auth_username": "johnd",
   "auth_password": "m38rmF$",
-  "user_id": 1
+  "user_id": 1,
+  "api_url": "https://fakestoreapi.com",
+  "ui_url": "www.saucedemo.com"
 }
 ```
 
@@ -102,18 +91,18 @@ Los scripts de ejecución están definidos dentro de package.json:
 
 * Corre todas las pruebas en segundo plano desde la terminal:
 ```bash
-npm run test
+npm run test:all
 ```
 
 * o directamente ejecuta:
 ```bash
-npx cypress run
+npm run cy:run
 ```
 
 2. Ejecución con Interfaz Gráfica (Cypress Test Runner)
 
 ```bash
-npm run cypress:open
+npm run cy:open
 ```
 ## Reportes de Pruebas
 
