@@ -1,4 +1,5 @@
-// Definimos el contrato de la respuesta esperada
+declare module 'cypress-mochawesome-reporter/plugin';
+
 interface LoginResponse {
   token: string;
 }

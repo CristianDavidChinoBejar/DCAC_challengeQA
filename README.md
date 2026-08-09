@@ -4,7 +4,7 @@ Contiene la suite de pruebas automatizadas de integración y contrato para la Fa
 
 ## Tecnologías y Arquitectura
 
-* **Framework:** Cypress (API Testing)
+* **Framework:** Cypress
 * **Lenguaje:** TypeScript
 * **Validación de Contratos:** AJV (JSON Schema Validation)
 
@@ -37,7 +37,7 @@ DCAC_challengeQA/
 Tener instalados:
 
 * [Node.js](https://nodejs.org/) (Versión 18.x o superior recomendada)
-* [npm] (Viene instalada con Node.js)
+* npm (Viene instalada con Node.js)
 ---
 
 ## Instalación
@@ -115,7 +115,22 @@ npx cypress run
 ```bash
 npm run cypress:open
 ```
+## Reportes de Pruebas
 
+El proyecto implementa **Mochawesome** (`cypress-mochawesome-reporter`) cuando las pruebas se ejecutan en modo headless.
+
+### Generar el reporte localmente
+
+1. Una vez finalizada la ejecución de la suite en modo headless, abrir el archivo autogenerado en el navegador:
+  ```bash
+# En Windows
+  start cypress/reports/index.html
+  ```
+
+  ```bash
+  # En Mac
+  open cypress/reports/index.html
+  ```
 ---
 
 ## 🤝 Nota Final

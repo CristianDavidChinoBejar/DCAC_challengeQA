@@ -16,6 +16,7 @@
     "@types/node": "^26.2.0",
     "ajv": "^8.20.0",
     "cypress": "^15.20.0",
+    "cypress-mochawesome-reporter": "^5.0.0",
     "typescript": "^7.0.2"
   }
 }
