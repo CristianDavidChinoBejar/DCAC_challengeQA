@@ -1,4 +1,4 @@
-import { API_URL } from './constants/urls';
+import { API_URL } from '../constants/urls';
 
 Cypress.Commands.add('login', (username?: string, password?: string) => {
     const user = username || Cypress.env('auth_username');
