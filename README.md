@@ -137,5 +137,5 @@ El proyecto implementa **Mochawesome** (`cypress-mochawesome-reporter`) cuando l
 
 ¡Gracias por revisar el proyecto! Quedo abierto a cualquier comentario o feedback sobre la implementación de las pruebas y la estructura del proyecto. 
 
-* **LinkedIn:** [Cristian David Chino Bejar](https://www.linkedin.com/in/tu-usuario)
+* **LinkedIn:** [Cristian David Chino Bejar](https://www.linkedin.com/in/cristian-david-chino-bejar)
 * **Email:** cristianrg095@gmail.com
