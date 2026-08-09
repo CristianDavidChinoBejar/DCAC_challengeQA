@@ -1,11 +1,17 @@
 import { validateSchema } from '../support/helpers/schema_validator';
 import { loginSchema } from '../fixtures/schemas/login_schema';
 import { cartSchema } from '../fixtures/schemas/cart_schema';
+import { todayDate } from '../support/helpers/get_today_date';
+
+interface CartProduct {
+  productId: number;
+  quantity: number;
+}
 
 describe('Test para el challenge en FakeStore API', () => {
   let authToken: string;
-  let dynamicProducts: Array<{ productId: number; quantity: number }> = [];
-  let additionalProduct: { productId: number; quantity: number };
+  let dynamicProducts: Array<CartProduct> = [];
+  let additionalProduct: CartProduct;
 
   before(() => {
     cy.request('GET', '/products').then((response) => {
@@ -60,7 +66,7 @@ describe('Test para el challenge en FakeStore API', () => {
 
       const cartPayload = {
         userId: Cypress.env('user_id'),
-        date: new Date().toISOString().split('T')[0],
+        date: todayDate,
         products: dynamicProducts
       };
 
@@ -88,7 +94,7 @@ describe('Test para el challenge en FakeStore API', () => {
       const updatedProducts = [...dynamicProducts, additionalProduct];
       const updateCartPayload = {
         userId: Cypress.env('user_id'),
-        date: new Date().toISOString().split('T')[0],
+        date: todayDate,
         products: updatedProducts
       };
 
@@ -111,7 +117,7 @@ describe('Test para el challenge en FakeStore API', () => {
 
     /**
      * @note La creación del carrito en FakeStore siempre retorna "id": 11, es un valor fijo.
-     * Por ende, este valor heredado hace que el DELETE retorne NULL con statusCode 200.
+     * La herencia de este ID hace que el DELETE retorne NULL con statusCode 200.
      * Esto es un comportamiento esperado, no un error en el test.
      * Se omite realizar validateSchema para la respuesta del DELETE, ya que no cumpliria el contrato declarado en cart_schema.ts.
      * GET /carts retorna la existencia de 7 carritos, y el DELETE sobre alguno de estos valores si retornaria un contrato válido, pero no es el caso de este flujo
