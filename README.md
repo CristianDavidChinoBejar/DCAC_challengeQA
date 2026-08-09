@@ -1,6 +1,6 @@
 # QA Automation Challenge - FakeStore API Testing
 
-Contiene la suite de pruebas automatizadas de integración y contrato para la API FakeStore API (https://fakestoreapi.com/), desarrollada con **Cypress** y **TypeScript**.
+Contiene la suite de pruebas automatizadas de integración y contrato para la FakeStore API (https://fakestoreapi.com/), desarrollada con **Cypress** y **TypeScript**.
 
 ## Tecnologías y Arquitectura
 
