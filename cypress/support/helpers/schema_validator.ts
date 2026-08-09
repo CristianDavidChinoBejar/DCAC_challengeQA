@@ -1,12 +1,14 @@
-import Ajv from "ajv";
+import Ajv from 'ajv';
 const ajv = new Ajv({ allErrors: true });
 
 export const validateSchema = (schema: object, responseBody: object) => {
-  const validate = ajv.compile(schema);
-  const valid = validate(responseBody);
+  const valid = ajv.validate(schema, responseBody);
+
   if (!valid) {
+    const errorDetails = ajv.errorsText(ajv.errors, { separator: '\n - ' });
+    
     throw new Error(
-      `Error de Esquema JSON:\n${JSON.stringify(validate.errors, null, 2)}`
+      `Error de Validación de Contrato JSON:\n - ${errorDetails}\n\nPayload obtenido:\n${JSON.stringify(responseBody, null, 2)}`
     );
   }
 };

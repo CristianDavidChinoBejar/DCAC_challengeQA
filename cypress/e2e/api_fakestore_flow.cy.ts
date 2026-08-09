@@ -5,20 +5,28 @@ import { cartSchema } from '../fixtures/schemas/cart_schema';
 describe('Test para el challenge en FakeStore API', () => {
   let authToken: string;
   let dynamicProducts: Array<{ productId: number; quantity: number }> = [];
+  let additionalProduct: { productId: number; quantity: number };
 
   before(() => {
     cy.request('GET', '/products').then((response) => {
       expect(response.status).to.eq(200);
 
-      dynamicProducts = response.body.slice(0, 3).map((product: { id: number }) => ({
+      const selectRandomProducts = Cypress._.sampleSize(response.body, 4);
+
+      dynamicProducts = selectRandomProducts.slice(0, 3).map((product: { id: number }) => ({
         productId: product.id,
-        quantity: Math.floor(Math.random() * 5) + 1
+        quantity: Cypress._.random(1, 5)
       }));
+
+      additionalProduct = {
+        productId: selectRandomProducts[3].id,
+        quantity: Cypress._.random(1, 5)
+      }
     });
   });
 
   context('Autenticación Login y almacenamiento de token', () => {
-    
+
     it('Verificar autenticación fallida en el login con credenciales inválidas', () => {
       cy.login('invalid_username', 'invalid_password').then((response) => {
         expect(response.status).to.eq(401);
@@ -29,9 +37,6 @@ describe('Test para el challenge en FakeStore API', () => {
     it('Verificar autenticación exitosa en el login con contrato válido', () => {
       const validUsername = Cypress.env('auth_username');
       const validPassword = Cypress.env('auth_password');
-
-      cy.log(`Username: ${validUsername}`);
-      cy.log(`Password: ${validPassword}`);
 
       cy.login(validUsername, validPassword).then((response) => {
         expect(response.status).to.eq(201);
@@ -45,7 +50,9 @@ describe('Test para el challenge en FakeStore API', () => {
   
   });
 
-  context('Creación de Carrito y reutilizando de Token con productos dinámicos)', () => {
+  context('Flujo de Carrito y reutilización del Token con productos dinámicos', () => {
+    
+    let newCartId: number;
 
     it('Creación de nuevo carrito con 3 productos dinámicos reutilizando Token', () => {
       expect(authToken).to.be.a('string').and.not.be.empty;
@@ -69,10 +76,59 @@ describe('Test para el challenge en FakeStore API', () => {
         expect(response.body).to.have.property('id');
         expect(response.body.products).to.be.an('array').with.lengthOf(3);
         expect(response.body.products[0].productId).to.eq(dynamicProducts[0].productId);
+        cy.log(`Response del POST: ${JSON.stringify(response.body)}`);
+
+        validateSchema(cartSchema, response.body);
+
+        newCartId = response.body.id;
+      });
+    });
+
+    it('Actualización del carrito agregando un producto dinámico adicional', () => {
+      const updatedProducts = [...dynamicProducts, additionalProduct];
+      const updateCartPayload = {
+        userId: Cypress.env('user_id'),
+        date: new Date().toISOString().split('T')[0],
+        products: updatedProducts
+      };
+
+      cy.request({
+        method: 'PUT',
+        url: `/carts/${newCartId}`,
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        },
+        body: updateCartPayload
+      }).then((response) => {
+        expect(response.status).to.be.eq(200);
+        expect(response.body.products).to.be.an('array').with.lengthOf(4);
+        expect(response.body.products[3].productId).to.eq(additionalProduct.productId);
+        cy.log(`Response del Update: ${JSON.stringify(response.body)}`);
 
         validateSchema(cartSchema, response.body);
       });
     });
-  });
 
+    /**
+     * @note La creación del carrito en FakeStore siempre retorna "id": 11, es un valor fijo.
+     * Por ende, este valor heredado hace que el DELETE retorne NULL con statusCode 200.
+     * Esto es un comportamiento esperado, no un error en el test.
+     * Se omite realizar validateSchema para la respuesta del DELETE, ya que no cumpliria el contrato declarado en cart_schema.ts.
+     * GET /carts retorna la existencia de 7 carritos, y el DELETE sobre alguno de estos valores si retornaria un contrato válido, pero no es el caso de este flujo
+     */
+    it('Eliminación del carrito creado', () => {
+      cy.request({
+        method: 'DELETE',
+        url: `/carts/${newCartId}`,
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        }
+      }).then((response) => {
+        expect(response.status).to.be.eq(200);
+        expect(response.body).to.be.null;
+        cy.log(`Respuesta después del Delete: ${JSON.stringify(response.body)}`);
+      });
+    });
+
+  });
 });
