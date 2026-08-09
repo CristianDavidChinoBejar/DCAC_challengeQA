@@ -9,7 +9,7 @@ declare namespace Cypress {
     /**
      * @example cy.login('username', 'password')
      */
-    login(username?: string, password?: string): Chainable<Cypress.Response<LoginResponse>>;
-    login_bypass(username?: string): Chainable<void>;
+    loginApi(username?: string, password?: string): Chainable<Cypress.Response<LoginResponse>>;
+    loginBypass(username?: string): Chainable<void>;
   }
 }

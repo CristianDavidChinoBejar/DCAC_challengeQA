@@ -22,6 +22,6 @@ export default defineConfig({
   },
   env: {
     api_url: 'https://fakestoreapi.com',
-    ui_url: 'https://www.saucedemo.com'
+    ui_url: 'www.saucedemo.com'
   }
 });

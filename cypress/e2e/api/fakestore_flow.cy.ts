@@ -17,7 +17,6 @@ describe('Test para el challenge en FakeStore API', () => {
   before(() => {
     cy.request('GET', `${API_URL}/products`).then((response) => {
       expect(response.status).to.eq(200);
-
       const selectRandomProducts = Cypress._.sampleSize(response.body, 4);
 
       dynamicProducts = selectRandomProducts.slice(0, 3).map((product: { id: number }) => ({
@@ -35,7 +34,7 @@ describe('Test para el challenge en FakeStore API', () => {
   context('Autenticación Login y almacenamiento de token', () => {
 
     it('Verificar autenticación fallida en el login con credenciales inválidas', () => {
-      cy.login('invalid_username', 'invalid_password').then((response) => {
+      cy.loginApi('invalid_username', 'invalid_password').then((response) => {
         expect(response.status).to.eq(401);
         expect(response.body).to.not.have.property('token');
       });
@@ -45,7 +44,7 @@ describe('Test para el challenge en FakeStore API', () => {
       const validUsername = Cypress.env('auth_username');
       const validPassword = Cypress.env('auth_password');
 
-      cy.login(validUsername, validPassword).then((response) => {
+      cy.loginApi(validUsername, validPassword).then((response) => {
         expect(response.status).to.eq(201);
         expect(response.body.token).to.not.be.empty;
 
