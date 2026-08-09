@@ -1,7 +1,8 @@
-import { validateSchema } from '../support/helpers/schema_validator';
-import { loginSchema } from '../fixtures/schemas/login_schema';
-import { cartSchema } from '../fixtures/schemas/cart_schema';
-import { todayDate } from '../support/helpers/get_today_date';
+import { validateSchema } from '../../support/helpers/schema_validator';
+import { loginSchema } from '../../fixtures/schemas/login_schema';
+import { cartSchema } from '../../fixtures/schemas/cart_schema';
+import { todayDate } from '../../support/helpers/get_today_date';
+import { API_URL } from '../../support/constants/urls';
 
 interface CartProduct {
   productId: number;
@@ -14,7 +15,7 @@ describe('Test para el challenge en FakeStore API', () => {
   let additionalProduct: CartProduct;
 
   before(() => {
-    cy.request('GET', '/products').then((response) => {
+    cy.request('GET', `${API_URL}/products`).then((response) => {
       expect(response.status).to.eq(200);
 
       const selectRandomProducts = Cypress._.sampleSize(response.body, 4);
@@ -72,7 +73,7 @@ describe('Test para el challenge en FakeStore API', () => {
 
       cy.request({
         method: 'POST',
-        url: '/carts',
+        url: `${API_URL}/carts`,
         headers: {
           Authorization: `Bearer ${authToken}`
         },
@@ -100,7 +101,7 @@ describe('Test para el challenge en FakeStore API', () => {
 
       cy.request({
         method: 'PUT',
-        url: `/carts/${newCartId}`,
+        url: `${API_URL}/carts/${newCartId}`,
         headers: {
           Authorization: `Bearer ${authToken}`
         },
@@ -125,7 +126,7 @@ describe('Test para el challenge en FakeStore API', () => {
     it('Eliminación del carrito creado', () => {
       cy.request({
         method: 'DELETE',
-        url: `/carts/${newCartId}`,
+        url: `${API_URL}/carts/${newCartId}`,
         headers: {
           Authorization: `Bearer ${authToken}`
         }

@@ -8,12 +8,11 @@ export default defineConfig({
   reporterOptions: {
     reportDir: 'cypress/reports',
     charts: true,
-    reportPageTitle: 'Reporte de API Testing',
+    reportPageTitle: 'Reporte Testing',
     embeddedScreenshots: true,
     inlineAssets: true,
   },
   e2e: {
-    baseUrl: 'https://fakestoreapi.com',
     specPattern: 'cypress/e2e/**/*.cy.ts',
     supportFile: 'cypress/support/e2e.ts',
     setupNodeEvents(on, config) {
@@ -21,4 +20,8 @@ export default defineConfig({
       return config;
     },
   },
+  env: {
+    api_url: 'https://fakestoreapi.com',
+    ui_url: 'https://www.saucedemo.com'
+  }
 });
