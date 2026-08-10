@@ -2,7 +2,7 @@
 
 Este repositorio contiene automatización de pruebas End to End utilizando [Cypress](https://www.cypress.io/) y TypeScript. 
 
-El proyecto cubre los flujos principales de dos aplicaciones de prueba: **FakeStore** (API Testing) y **SauceDemo** (UI Testing).
+El proyecto cubre los flujos principales de: **FakeStore** (API Testing) y **SauceDemo** (UI Testing).
 
 ## Tecnologías y Arquitectura
 
