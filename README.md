@@ -1,4 +1,4 @@
-# QA Automation Challenge - FakeStore y SauceDemo
+# QA Automation Challenge - FakeStore, SauceDemo y Reporte de errores
 
 Este repositorio contiene automatización de pruebas End to End utilizando [Cypress](https://www.cypress.io/) y TypeScript. 
 
@@ -121,6 +121,10 @@ El proyecto implementa **Mochawesome** (`cypress-mochawesome-reporter`) cuando l
   open cypress/reports/index.html
   ```
 ---
+
+### Reporte de errores
+
+<a href="https://docs.google.com/spreadsheets/d/1IVgDH1q6Sh2kFVx-E3wzTk7n7RjkG6jDp6kkoLYiXlM/edit?usp=sharing" target="_blank">Ver tabla de reporte de errores en Google Sheets</a>
 
 ## 🤝 Nota Final
 
